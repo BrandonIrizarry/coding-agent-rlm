@@ -24,7 +24,6 @@ class REPLEnvironment:
         self.namespace['context'] = context
         self.namespace['llm_query'] = self._make_llm_query()
         self.namespace['FINAL'] = self._make_final()
-        self.namespace['FINAL_VAR'] = self._make_final_var()
 
     def _make_final(self):
         """
@@ -44,26 +43,6 @@ class REPLEnvironment:
             
         return FINAL
 
-
-    def _make_final_var(self):
-        """
-        Create the FINAL_VAR function that terminates with a variable's value.
-
-        Returns:
-            A function that when called with a variable name (string),
-            looks up that variable in self.namespace and calls FINAL with its value
-
-        Example usage in REPL:
-            result = compute_something()
-            FINAL_VAR("result")
-        """
-        
-        def FINAL_VAR(var_name):
-            var  = self.namespace[var_name]
-            self.finished = True
-            self.result = var
-
-        return FINAL_VAR
 
     def _make_llm_query(self):
         """
