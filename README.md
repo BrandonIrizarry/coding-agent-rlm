@@ -1,5 +1,15 @@
 # coding-agent-rlm
-Coding agent based on RLM implementation
+Coding agent based on RLM (Recursive Language Model) implementation
+
+![Demo](assets/demo.gif)
+
+## Overview
+
+This is a coding agent that uses [recursive language models](https://alexzhang13.github.io/blog/2025/rlm/) to solve tasks with large contexts. The main agent can delegate subtasks to sub-agents that have access to a Python REPL environment. When an agent reads a file with get_file_contents that is too large, it can delegate the task of analyzing the file to a sub-agent that can read the file in smaller chunks.
+
+All code generated from the agent itself will be stored in the working_directory folder as that is where the agent has access to the file system to read, write, delete and run files. This does not apply to the Sub RLM agent, which runs in a separate environment and does not have access to the working_directory.
+
+## Installation
 
 To run the project, you can run main.py. Make sure to set up your environment variables first.
 
@@ -28,6 +38,12 @@ benchmark.py (benchmark is based on Alex Zhang's RLM minimal implementation)
 ```
 
 
+Max recursion is set to 1, meaning the agent can only call itself once to refine its solution. To change this, modify
+the max_depth parameter in call_sub_rlm.py:
+
+```
+run_sub_rlm(client, task, verbose=False, depth=0, max_depth=1)
+```
 
 Here are some resources that were used for the project:
 
