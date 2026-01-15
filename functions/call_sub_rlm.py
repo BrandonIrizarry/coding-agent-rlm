@@ -17,6 +17,13 @@ config=types.GenerateContentConfig(
         tools=[available_functions], system_instruction=repl_system_prompt
     )
 
+def run_sub_rlm(client, task, verbose=False):
+    """Run sub-agent to completion and return result."""
+    messages = [types.Content(role="user", parts=[types.Part.from_text(task)])]
+    while True:
+        result = call_sub_rlm(client, messages, verbose, config)
+        if result is not None:
+            return result
 
 def call_sub_rlm(client, messages, verbose, config):
         
