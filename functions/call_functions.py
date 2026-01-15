@@ -5,11 +5,11 @@ from functions.get_files_info import get_files_info
 from functions.run_any_file import run_any_file
 from functions.write_file import write_file
 from functions.delete_file import delete_file
-from functions.call_sub_rlm import call_sub_rlm
+from functions.call_sub_rlm import call_sub_rlm, run_sub_rlm
 
 
 
-def call_function(function_call_part, verbose=False):
+def call_function(function_call_part, verbose=False, client=None):
     if verbose:
         print(f"Calling function: {function_call_part.name}({function_call_part.args})")
     else:
@@ -26,6 +26,19 @@ def call_function(function_call_part, verbose=False):
         "call_sub_rlm": call_sub_rlm
 
     }
+
+    if function_name == "call_sub_rlm":
+        task = function_call_part.args.get("task", "")
+        result = run_sub_rlm(client, task, verbose)
+        return types.Content(
+            role="tool",
+            parts=[
+                types.Part.from_function_response(
+                    name=function_name,
+                    response={"result": result},
+                )
+            ],
+        )
 
     if function_name not in function_map:
         return types.Content(
