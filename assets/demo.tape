@@ -10,6 +10,7 @@ Set TypingSpeed 35ms
 Type "# Recursive Language Model Coding Agent"
 Enter
 Type "# Use recursive language model technique for LLMs to handle large context sizes!"
+Enter
 Type "# Hidden in 1M lines of text is a secret instruction..."
 Enter
 
@@ -27,10 +28,3 @@ Type "Read haystack.txt and find the SECRET INSTRUCTION. Tell me what the secret
 Enter
 Sleep 25s
 
-Type "/exit"
-Enter
-Sleep 500ms
-
-Type "rm haystack.txt"
-Enter
-Sleep 300ms
