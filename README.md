@@ -23,8 +23,8 @@ For environment variables, create a .env file in the root directory with the fol
 
 ```
 GEMINI_API_KEY="your_gemini_api_key"
-GEMINI_MODEL="gemini-2.5-pro"
-GEMINI_SUB_RLM_MODEL="gemini-2.5-flash-lite"
+GEMINI_MODEL="gemini-2.5-flash" #or any model that you prefer
+GEMINI_SUB_RLM_MODEL="gemini-2.5-flash-lite" #or any smaller model that you prefer
 ```
 
 To run the coding agent, use:
@@ -36,8 +36,7 @@ To test it against a benchmark, you can run:
 
 benchmark.py (benchmark is based on Alex Zhang's RLM minimal implementation)
 
-```uv python benchmark.py
-```
+```uv python benchmark.py```
 
 
 Max recursion is set to 1, meaning the agent can only call itself once to refine its solution. To change this, modify
