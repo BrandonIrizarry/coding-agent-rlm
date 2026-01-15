@@ -6,7 +6,7 @@ import traceback
 
 class REPLEnvironment:
 
-    def __init__(self, context, llm_client=None):
+    def __init__(self, context, llm_client=None, depth=0, max_depth=1):
         """
         Initialize the REPL environment.
 
@@ -18,6 +18,8 @@ class REPLEnvironment:
         self.finished = False
         self.result = None
         self._llm_client = llm_client
+        self._depth = depth
+        self._max_depth = max_depth
 
         self.namespace['context'] = context
         self.namespace['llm_query'] = self._make_llm_query()
@@ -78,7 +80,7 @@ class REPLEnvironment:
         def llm_query(query, context=""):
             from functions.call_sub_rlm import run_sub_rlm
             task = f"{query}\n\nContext:\n{context}" if context else query
-            return run_sub_rlm(self._llm_client, task)
+            return run_sub_rlm(self._llm_client, task, depth=self._depth + 1, max_depth=self._max_depth)
         return llm_query
 
     def execute(self, code: str) -> str:
@@ -113,13 +115,13 @@ class REPLEnvironment:
 
 def extract_repl_code(response_text: str) -> str | None:
     """
-    Extract Python code from a ```repl code block in LLM response.
+    Extract Python code from a ```repl or ```python code block in LLM response.
 
     Args:
         response_text: The full text response from the LLM
 
     Returns:
-        The code inside the ```repl block, or None if no block found
+        The code inside the code block, or None if no block found
 
     Example:
         text = '''Here's my code:
@@ -131,7 +133,14 @@ def extract_repl_code(response_text: str) -> str | None:
         code = extract_repl_code(text)
         # code == "x = 1 + 1\\nprint(x)"
     """
+    # Try ```repl first, then ```python as fallback
     result = re.search(r"```repl\n(.*?)```", response_text, flags=re.DOTALL)
     if result:
         return result.group(1).strip()
+
+    # Fallback to ```python
+    result = re.search(r"```python\n(.*?)```", response_text, flags=re.DOTALL)
+    if result:
+        return result.group(1).strip()
+
     return None
