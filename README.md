@@ -29,14 +29,14 @@ GEMINI_SUB_RLM_MODEL="gemini-2.5-flash-lite" #or any smaller model that you pref
 
 To run the coding agent, use:
 
-```uv python main.py```
+```uv run main.py```
 
 
 To test it against a benchmark, you can run:
 
 benchmark.py (benchmark is based on Alex Zhang's RLM minimal implementation)
 
-```uv python benchmark.py```
+```uv run benchmark.py```
 
 
 Max recursion is set to 1, meaning the agent can only call itself once to refine its solution. To change this, modify
